@@ -1,0 +1,5 @@
+package com.ms.external;
+
+public interface ProductClient {
+
+}

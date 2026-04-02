@@ -1,0 +1,13 @@
+package com.ms.Service;
+
+import com.ms.model.ProductRequest;
+import com.ms.model.ProductResponse;
+
+public interface ProductService {
+	
+	ProductResponse addProduct(ProductRequest pr);
+
+	ProductResponse getProductById(Integer id);
+
+	//void reduceQuantity(Long ProductId, Long quantity);
+}

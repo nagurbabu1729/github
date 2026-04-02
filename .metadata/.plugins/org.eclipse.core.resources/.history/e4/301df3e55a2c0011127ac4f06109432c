@@ -1,0 +1,17 @@
+package com.ms.Controller;
+
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class OrderController {
+	
+	@Autowired
+	private OrderService orderService;
+	
+	@PostMapping("/placeOrder")
+	public ResponseEntity<?> placeOrder(@RequestBody OrderRequest) {
+		
+	}
+
+}

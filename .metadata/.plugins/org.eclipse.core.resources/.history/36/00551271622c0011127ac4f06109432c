@@ -1,0 +1,54 @@
+package com.ms.Controller;
+
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import com.ms.Service.ProductService;
+import com.ms.model.ProductRequest;
+import com.ms.model.ProductResponse;
+
+@RestController
+@RequestMapping("/product")
+public class ProductController {
+	
+	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(ProductController.class);
+	
+	@Autowired
+	private ProductService productservice;
+	
+	@PostMapping("/addProduct")
+	public ResponseEntity<?> addProduct(@RequestBody ProductRequest pr) {
+		
+		logger.info("product-api entered");
+		
+		ProductResponse products = productservice.addProduct(pr);
+		
+		return ResponseEntity.status(HttpStatus.CREATED).body(products);
+	}
+	
+	@GetMapping("/getProduct/{id}")
+	public ResponseEntity<ProductResponse> getProductById(@PathVariable Integer id) {
+		
+		logger.info("produt-get api entered");
+		
+		ProductResponse response  = productservice.getProductById(id);
+		
+		return ResponseEntity.status(HttpStatus.OK).body(response);
+	}
+	
+	@PostMapping("/reducequantity")
+	public void reduceQuantity(@PathVariable Long id, @PathVariable ) {
+		
+		return productservice.reduceQuantity(id);
+		
+		
+	}
+	
+}

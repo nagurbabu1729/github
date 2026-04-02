@@ -1,0 +1,12 @@
+package com.ms.Service;
+
+import com.ms.Dto.OrderRequest;
+import com.ms.Dto.OrderResponse;
+
+public interface OrderService {
+
+	OrderResponse placeOrder(OrderRequest orderRequest);
+	
+	
+
+}

@@ -1,0 +1,36 @@
+package com.ms.Service;
+
+import java.time.Instant;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.ms.Dto.OrderRequest;
+import com.ms.Dto.OrderResponse;
+import com.ms.Entity.Orders;
+import com.ms.Repository.OrderRepository;
+
+@Service
+public class OrderServiceImpl implements OrderService{
+	
+	@Autowired
+	private OrderRepository orderRepository;
+	
+	
+	public OrderResponse placeOrder(OrderRequest orderRequest) {
+		
+		OrderResponse orderResponse = new OrderResponse();
+		
+		orders.setProductId(orderRequest.getProductId());
+		orders.setAmount(orderRequest.getTotalAmount());
+		orders.setQuantity(orderRequest.getQuantity());
+		orders.setOrderStatus("Created");
+		orders.setOrderDate(Instant.now());
+		
+		orderRepository.save(orders);
+		
+		return ;
+		
+	}
+
+}

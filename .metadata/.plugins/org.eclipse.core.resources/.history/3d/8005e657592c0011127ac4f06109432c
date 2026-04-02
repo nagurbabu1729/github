@@ -1,0 +1,14 @@
+package com.ms.Dto;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
+@Table
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+public class Orders {
+
+}

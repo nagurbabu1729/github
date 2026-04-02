@@ -1,0 +1,23 @@
+package com.ms.model;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+
+@AllArgsConstructor
+@NoArgsConstructor
+public class ProductRequest {
+	
+	private Long pid;
+	
+	private String Productname;
+	
+	private String Price;
+	
+	private Long quantity;
+
+}

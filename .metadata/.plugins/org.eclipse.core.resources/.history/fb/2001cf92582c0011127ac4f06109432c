@@ -1,0 +1,12 @@
+package com.ms.Dto;
+
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Table
+@AllArgsConstructor
+@NoArgsConstructor
+public class Orders {
+
+}

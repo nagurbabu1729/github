@@ -1,0 +1,87 @@
+package com.Productbasedcompany.employeeapi.security;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+
+import com.Productbasedcompany.employeeapi.service.CustomUserDetailsService;
+import com.Productbasedcompany.employeeapi.util.JwtFilter;
+import com.Productbasedcompany.employeeapi.util.JwtUtil;
+
+import jakarta.servlet.http.HttpServletResponse;
+
+@Configuration
+@EnableWebSecurity
+@EnableMethodSecurity
+public class SecurityConfig {
+	
+	@Autowired
+	private JwtFilter jwtfilter;
+	
+	@Autowired
+	private UserDetailsService userdetailsservice;
+	
+	@Bean
+	AuthenticationManager getAuthentcationManager(AuthenticationConfiguration config) throws Exception {
+		return config.getAuthenticationManager();
+	}
+	
+	@Bean
+	SecurityFilterChain securityfilterchain(HttpSecurity http) throws Exception{
+		
+		http.csrf(csrf->csrf.disable());
+		http.authorizeHttpRequests(authorize->authorize.requestMatchers("/authenticate",'/employee-get/{employeeid}').permitAll()
+				//.requestMatchers("/employee-add").hasRole("ADMIN")
+				//.requestMatchers("/getall").hasAnyRole("USER","ADMIN")
+				.anyRequest().authenticated());
+		http.exceptionHandling(ex -> ex
+	            .accessDeniedHandler((request, response, accessDeniedException) -> {
+	                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+	                response.setContentType("application/json");
+	                response.getWriter().write("""
+	                    {
+	                      "status": 403,
+	                      "error": "Forbidden",
+	                      "message": "Access Denied",
+	                      "path": "%s"
+	                    }
+	                """.formatted(request.getRequestURI()));
+	            })
+	        );
+		http.sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+		http.addFilterBefore(jwtfilter, UsernamePasswordAuthenticationFilter.class);
+		return http.build();
+		
+	}
+	
+	@Bean
+	PasswordEncoder passwordencode() {
+		return new BCryptPasswordEncoder();
+	}
+	
+	@Bean
+	AuthenticationProvider authprovider() {
+		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+		provider.setUserDetailsService(userdetailsservice);
+		provider.setPasswordEncoder(passwordencode());
+		
+		return provider;
+		
+	}
+	
+}

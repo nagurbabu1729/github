@@ -1,0 +1,10 @@
+package com.ms.external;
+
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+
+public interface ProductClient {
+	
+	public void reduceQuantity(@PathVariable Long Productid, @RequestParam Long QUANTITY);
+
+}

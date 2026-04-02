@@ -1,0 +1,132 @@
+package com.Productbasedcompany.employeeapi.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.Productbasedcompany.employeeapi.dto.EmployeeRequest;
+import com.Productbasedcompany.employeeapi.dto.EmployeeResponse;
+import com.Productbasedcompany.employeeapi.entity.Employee;
+import com.Productbasedcompany.employeeapi.service.EmployeeService;
+
+@RestController
+public class EmployeeController {
+	
+	@Autowired
+	private EmployeeService empservice;
+	
+	@PostMapping("/employee-add")
+	public ResponseEntity<?>addEmployee(@RequestBody EmployeeRequest emp) {
+		
+			EmployeeResponse res = empservice.insertEmployee(emp);
+		try {
+			if(res != null) {
+				return ResponseEntity.status(HttpStatus.CREATED).body(res);
+			}
+			else {
+				return ResponseEntity.status(HttpStatus.CONFLICT)
+	                    .body("Email already exists: " + emp.getEmail());
+			}
+		}
+		
+		catch(Exception ex) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+	                .body("Something went wrong: " + ex.getMessage());
+		}
+		
+	}
+	
+	@GetMapping("/employee-get/{employeeid}")
+	public ResponseEntity<?>getemployeebyid(@PathVariable Integer employeeid)  {
+		
+		EmployeeResponse res = empservice.getemployeebyid(employeeid);
+		
+		try {
+		
+			if(res == null) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body("employee not available:"+employeeid);
+			}
+			else {
+				return ResponseEntity.status(HttpStatus.OK).body(res);
+			}
+		}
+		
+		catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("something went wrong:"+e.getMessage());
+		}
+		
+	}
+	
+	@PatchMapping("update-emp/{email}")
+	public ResponseEntity<?>updatelocationByEmail(@PathVariable String email, @RequestBody EmployeeRequest er) {
+		
+		try {
+			EmployeeResponse res = empservice.updatelocationByEmail(email, er.getLocation());
+			if(res == null) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body("employee not available:"+email);
+			}
+			else {
+				return ResponseEntity.status(HttpStatus.OK).body("updated employee newlocation"+er.getLocation());
+			}
+		}
+		catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("something went wrong:"+e.getMessage());
+
+		}
+	}
+	
+	@PutMapping("update-all/{email}")
+	public ResponseEntity<?>updateAllDetailsByEmployee(@PathVariable String email, @RequestBody EmployeeRequest er) {
+		
+		
+		try {
+			EmployeeResponse response = empservice.updateAllDetailsOfEmployee(email,er);
+			
+			if(response == null) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body("employee not available:"+er.getEmail());
+			}
+			else {
+				return ResponseEntity.status(HttpStatus.OK).body(response);
+
+			}
+		}
+		catch(Exception ex) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("something went wrong:"+ex.getMessage());
+
+		}
+		
+	}
+	
+	@GetMapping("/getall")
+	public ResponseEntity<?>getAllEmployees() {
+		
+		
+		try {
+			List<Employee>AllEmployees = empservice.getAllEmployees();
+			
+			if(AllEmployees.isEmpty() || AllEmployees == null) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body("employees not available:");
+
+			}
+			else {
+				return ResponseEntity.status(HttpStatus.OK).body(AllEmployees);
+
+			}
+		}
+		catch(Exception ex) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("something went wrong:"+ex.getMessage());
+		}
+		
+	}
+
+}

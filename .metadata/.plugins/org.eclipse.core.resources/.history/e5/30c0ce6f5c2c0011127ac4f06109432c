@@ -1,0 +1,19 @@
+package com.ms.Service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.ms.Dto.OrderResponse;
+import com.ms.Repository.OrderRepository;
+
+@Service
+public class OrderServiceImpl implements OrderService{
+	
+	@Autowired
+	private OrderRepository orderRepository;
+	
+	public OrderResponse PlaceOrder(OrderRequest orderRequest) {
+		
+	}
+
+}

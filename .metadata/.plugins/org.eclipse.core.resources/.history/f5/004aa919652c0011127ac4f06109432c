@@ -1,0 +1,75 @@
+package com.ms.Service;
+
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.ms.Repository.ProductRepo;
+import com.ms.entity.Product;
+import com.ms.model.ProductRequest;
+import com.ms.model.ProductResponse;
+
+@Service
+public class ProductServiceImpl implements ProductService {
+	
+	@Autowired
+	private ProductRepo prepo;
+	
+	public ProductResponse MaptoResponse(Product product) {
+		
+		ProductResponse products = new ProductResponse();
+		products.setProductname(product.getProductname());
+		products.setPrice(product.getPrice());
+		products.setQuantity(product.getQuantity());
+		
+		return products;
+		
+	}
+
+	@Override
+	public ProductResponse addProduct(ProductRequest pr) {
+		
+		Product product1 = new Product();
+		product1.setProductname(pr.getProductname());
+		product1.setPrice(pr.getPrice());
+		product1.setQuantity(pr.getQuantity());
+		Product prod = prepo.save(product1);
+			
+		return MaptoResponse(prod);
+	}
+
+	@Override
+	public ProductResponse getProductById(Integer id) {
+		
+		Optional<Product> product = prepo.findById(id);
+		
+		Product prod = product.get();
+		
+		ProductResponse products = new ProductResponse();
+		products.setProductname(prod.getProductname());
+		products.setPrice(prod.getPrice());
+		products.setQuantity(prod.getQuantity());
+		
+		return products;
+	}
+
+
+	@Override
+	public Object reduceQuantity(Long id, Long quantity) {
+
+		Optional<Product> prod = prepo.findById(id);
+		
+		Product prods  = prod.get();
+		
+		if(prods.getQuantity() < quantity) {
+			return "no sufficient funds";
+		}
+		else {
+			prods.setQuantity(prods.getQuantity() - quantity);
+	        prepo.save(prod);
+		}
+		
+	}
+
+}
