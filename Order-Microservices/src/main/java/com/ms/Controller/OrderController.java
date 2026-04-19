@@ -12,14 +12,14 @@ import com.ms.Service.OrderService;
 @RestController
 public class OrderController {
 	
-	@Autowired
+	@Autowired 	
 	private OrderService orderService;
 	
 	@PostMapping("/placeOrder")
-	public ResponseEntity<?> placeOrder(@RequestBody OrderRequest orderRequest) {
+	public ResponseEntity<Long> placeOrder(@RequestBody OrderRequest orderRequest) {
 		
 		long response = orderService.placeOrder(orderRequest);
-		return ResponseEntity.status(HttpStatus.CREATED).body(response);
+		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 
 }

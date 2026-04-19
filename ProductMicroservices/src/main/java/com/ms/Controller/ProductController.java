@@ -45,10 +45,10 @@ public class ProductController {
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 	
-	@PutMapping("/reducequantity/{Productid}")	
-	public void reduceQuantity(@PathVariable Long Productid, @RequestParam Long QUANTITY) {
+	@PutMapping("/reducequantity/{ProductId}")	
+	public void reduceQuantity(@PathVariable Long ProductId, @RequestParam("quantity") Long QUANTITY) {
 		
-		productservice.reduceQuantity(Productid,QUANTITY);
+		productservice.reduceQuantity(ProductId,QUANTITY);
 		
 	}
 	

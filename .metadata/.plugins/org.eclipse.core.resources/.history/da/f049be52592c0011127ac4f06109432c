@@ -1,8 +1,0 @@
-package com.ms.Dto;
-
-import jakarta.persistence.Table;
-
-@Table
-public class Orders {
-
-}

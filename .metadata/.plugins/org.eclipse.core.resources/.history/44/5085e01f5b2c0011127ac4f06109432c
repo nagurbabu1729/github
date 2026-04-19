@@ -1,5 +1,0 @@
-package com.ms.Service;
-
-public interface OrderService {
-
-}

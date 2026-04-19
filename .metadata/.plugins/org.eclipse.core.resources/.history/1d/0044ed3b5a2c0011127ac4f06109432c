@@ -1,9 +1,0 @@
-package com.ms.Dto;
-
-public class OrderRequest {
-	
-	private long productId;
-	
-	private long totalAmount;
-
-}

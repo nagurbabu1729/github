@@ -1,5 +1,0 @@
-package com.ms.Dto;
-
-public class OrderRequest {
-
-}

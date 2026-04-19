@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <typeInfoHistroy>
-    <typeInfo handle="=ProductMicroservices/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.ms.Service{ProductService.java[ProductService" modifiers="513" timestamp="1774976514991"/>
+    <typeInfo handle="=ProductMicroservices/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.ms.Service{ProductService.java[ProductService" modifiers="513" timestamp="1775668031678"/>
+    <typeInfo handle="=Payment-Microservices/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.ms.Service{PaymentService.java[PaymentService" modifiers="513" timestamp="1776189623836"/>
 </typeInfoHistroy>

@@ -5,6 +5,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ms.ExceptionHandling.InsufficientQuantityException;
+import com.ms.ExceptionHandling.ProductNotFoundException;
 import com.ms.Repository.ProductRepo;
 import com.ms.entity.Product;
 import com.ms.model.ProductRequest;
@@ -56,18 +58,17 @@ public class ProductServiceImpl implements ProductService {
 
 
 	@Override
-	public void reduceQuantity(Long Productid, Long QUANTITY) {
+	public void reduceQuantity(Long ProductId, Long quantity) {
 
-		Optional<Product> prod = prepo.findById(Productid);
-		Product prods  = prod.get();
-		
-		if(prods.getQuantity() < QUANTITY) {
-			System.out.println("insufficient funds");
-		}
-		else {
-			prods.setQuantity(prods.getQuantity() - QUANTITY);
-	        prepo.save(prods);
-		}
+		Product product = prepo.findById(ProductId)
+	            .orElseThrow(() -> new ProductNotFoundException("Product not found"));
+
+	    if (product.getQuantity() < quantity) {
+	    	throw new InsufficientQuantityException("Insufficient product quantity");
+	    }
+
+	    product.setQuantity(product.getQuantity() - quantity);
+	    prepo.save(product);
 	}
 
 }
